@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+import boto3
+from botocore.client import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -100,8 +102,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+## Media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Настройки Yandex Object Storage
+YANDEX_CLOUD = {
+    'ENDPOINT_URL': 'https://storage.yandexcloud.net',
+    'ACCESS_KEY': 'YCAJErn3Mtz9Ff_lxTVNPfNpr',  # Вставьте ваш Access Key ID
+    'SECRET_KEY': 'YCM-CtUXf-aDe2KrCptxon12KNP5xTOHDxOtNdvo',  # Вставьте ваш Secret Access Key
+    'BUCKET_NAME': 'lettistorage',  # Вставьте имя вашего бакета
+    'REGION': 'ru-central1',  # Регион может быть указан по вашему выбору
+}
 
 
 # Internationalization
