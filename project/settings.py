@@ -108,9 +108,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Настройки Yandex Object Storage
+YANDEX_CLOUD = {
+    'ENDPOINT_URL': 'https://storage.yandexcloud.net',
+    'ACCESS_KEY': os.getenv('ACCESS_KEY'),  # Вставьте ваш Access Key ID
+    'SECRET_KEY': os.getenv('SECRET_KEY'),  # Вставьте ваш Secret Access Key
+    'BUCKET_NAME': os.getenv('BUCKET_NAME'),  # Вставьте имя вашего бакета
+    'REGION': 'ru-central1',  # Регион может быть указан по вашему выбору
+}
 
-
+    
 # Internationalization
+# https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
