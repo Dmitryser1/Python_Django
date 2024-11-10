@@ -81,3 +81,106 @@ YANDEX_CLOUD_ENDPOINT=https://storage.yandexcloud.net
 python manage.py migrate
 python manage.py runserver
 ```
+
+
+#### Шаг 6: Настройка виртуального сервера (Compute Instance)
+Перейдите в Yandex Cloud Compute.
+
+Создайте новый виртуальный сервер:  
+
+- В разделе "Compute Cloud" нажмите "Создать виртуальную машину".
+- Выберите операционную систему Ubuntu 20.04 LTS.
+- Настройте количество CPU и памяти (рекомендуется не менее 4 CPU и 16 ГБ RAM для YOLOv8).
+- Создайте новый SSH ключ для доступа или используйте существующий.
+
+```bash
+ssh <your-username>@<your-public-ip>
+```
+
+#### Шаг 7: Установка YOLOv8 и зависимостей
+
+1. Обновите пакеты на сервере:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+2. Установите Python и необходимые библиотеки:
+
+```bash
+sudo apt install python3-pip -y
+pip3 install --upgrade pip
+```
+3. Установите виртуальное окружение Python:
+
+```bash
+sudo apt install python3-venv -y
+python3 -m venv yolov8-env
+source yolov8-env/bin/activate
+```
+4. Установите YOLOv8:
+
+```bash
+pip install ultralytics
+```
+Это установит YOLOv8 и все необходимые библиотеки для работы с ней.
+
+
+5. Проверьте установку YOLOv8:
+
+```bash
+yolo
+```
+
+#### Шаг 8: Настройка доступа к Yandex Object Storage
+
+1. Установите библиотеку boto3 для взаимодействия с Yandex Object Storage:
+
+```bash
+pip install boto3
+```
+
+#### Шаг 9: Настройка скрипта для загрузки и обработки видео
+
+1. Разместите код загрузки видео из Object Storage и обработки YOLOv8 на VM. Создайте файл, например, process_video.py.
+
+Пример структуры process_video.py для скачивания видео и обработки YOLOv8:
+
+```python
+import boto3
+from ultralytics import YOLO
+import cv2
+
+# Настройки подключения к Object Storage
+s3_client = boto3.client(
+    's3',
+    endpoint_url='https://storage.yandexcloud.net',
+    aws_access_key_id='ВАШ_ACCESS_KEY',
+    aws_secret_access_key='ВАШ_SECRET_KEY'
+)
+
+bucket_name = 'your-bucket-name'
+video_key = 'path/to/video.mp4'  # Путь к видеофайлу в бакете
+local_video_path = '/tmp/video.mp4'
+
+# Скачивание видео из Object Storage
+s3_client.download_file(bucket_name, video_key, local_video_path)
+
+# Обработка видео с помощью YOLOv8
+model = YOLO("yolov8n.pt")
+results = model.predict(local_video_path, save=True)
+
+print("Обработка завершена. Результаты сохранены локально.")
+```
+
+2. Запуск скрипта обработки:
+
+Выполните скрипт на сервере:
+
+```bash
+python3 process_video.py
+```
+Скрипт загрузит видеофайл из Object Storage, выполнит обработку с YOLOv8 и сохранит результаты на локальной машине.
+
+# Автоматизация запуска (опционально):
+
+Настройте автоматический запуск скрипта с помощью Cron или других утилит для периодической обработки видео, если необходимо.
