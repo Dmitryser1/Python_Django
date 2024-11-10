@@ -110,9 +110,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Настройки Yandex Object Storage
 YANDEX_CLOUD = {
     'ENDPOINT_URL': 'https://storage.yandexcloud.net',
-    'ACCESS_KEY': 'YCAJErn3Mtz9Ff_lxTVNPfNpr',  # Вставьте ваш Access Key ID
-    'SECRET_KEY': 'YCM-CtUXf-aDe2KrCptxon12KNP5xTOHDxOtNdvo',  # Вставьте ваш Secret Access Key
-    'BUCKET_NAME': 'lettistorage',  # Вставьте имя вашего бакета
+    'ACCESS_KEY': 'YOUR_ACCESS_KEY',  # Вставьте ваш Access Key ID
+    'SECRET_KEY': 'YOUR_SECRET_KEY',  # Вставьте ваш Secret Access Key
+    'BUCKET_NAME': 'YOUR_BUCKET_NAME',  # Вставьте имя вашего бакета
     'REGION': 'ru-central1',  # Регион может быть указан по вашему выбору
 }
 
